@@ -4,7 +4,7 @@ This plugin allows Binary Ninja to take advantage of radare2's linear sweep (whi
 
 Usually this will identify several functions that were missed by Binja.
 
-# Installation
+# Linux Installation
 
 ```
 sudo pip install r2pipe
