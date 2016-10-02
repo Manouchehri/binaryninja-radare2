@@ -3,6 +3,7 @@ Because why not?
 
 # installation
 ```
+sudo pip install r2pipe
 cd ~/.binaryninja/plugins 
 git clone https://github.com/Manouchehri/binaryninja-radare2 binaryninja_radare2
 echo "import binaryninja_radare2" >> ~/.binaryninja/plugins/wrapper.py
