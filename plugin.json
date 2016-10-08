@@ -11,7 +11,7 @@
 		},
 		"dependencies": {
 			"pip": ["r2pipe"],
-			"apt": ["apt", "radare2"],
+			"apt": ["apt"],
 			"other": [""]
 		},
 		"version": "0.1 alpha",
