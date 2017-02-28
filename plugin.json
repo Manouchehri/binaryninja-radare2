@@ -1,7 +1,7 @@
 {
 	"plugin": {
 		"name": "Radare2 Linear Sweep Plugin",
-		"type": ["core", "ui", "binaryview"],
+		"type": ["sync"],
 		"api": "python2",
 		"description": "Uses radare to identify extra symbols",
 		"longdescription": "Uses radare to identify extra symbols",
