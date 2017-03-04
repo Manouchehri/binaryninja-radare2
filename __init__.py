@@ -8,6 +8,7 @@ def spawn(bv):
 	r2p.quit()
 
 	for r2function in r2functions:
-		bv.add_function(bv.platform, r2function['offset'])  # should do r2function['name'] as well
+		bv.add_function(r2function['offset'], plat=bv.platform)	 # should do r2function['name'] as well
+	bv.reanalyze()
 
 PluginCommand.register("radare2", "Run radare2", spawn)
