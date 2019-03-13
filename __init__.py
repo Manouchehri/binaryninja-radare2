@@ -9,13 +9,29 @@ class LinearSweeper(BackgroundTaskThread):
 
     def run(self):
         r2p = r2pipe.open(self.bv.file.filename)
-	r2p.cmd('aaaa')
-	r2functions = r2p.cmdj('aflj')
+        r2p.cmd('aaa')
+        r2functions = r2p.cmdj('aflj')
         r2comments = r2p.cmdj('CCj')
-	r2p.quit()
+        r2p.quit()
 
-	for r2function in r2functions:
-            self.bv.add_function(r2function['offset'], plat=self.bv.platform)	 # should do r2function['name'] as well
+        for r2function in r2functions:
+            addr = r2function['offset']
+            bjfunc = self.bv.get_function(addr)
+
+            if bjfunc is None:
+                self.bv.add_function(addr, plat=self.bv.platform) # should do r2function['name'] as well
+                if self.bv.get_function(addr) is None:
+                    log.log_warn('Cannot create function! Addr: 0x{:X}'.format(addr))
+                    continue
+
+            bjfunc = self.bv.get_function(addr)
+            if 'fcn.' not in r2function['name']:
+                log.log_info('Rename function "{}" -> "{}"'.format(
+                    bjfunc.name,
+                    r2function['name']
+                ))
+
+                bjfunc.name = r2function['name']
             
         self.bv.reanalyze()
         
@@ -30,8 +46,8 @@ class LinearSweeper(BackgroundTaskThread):
                     func.set_comment_at(addr, comm)
 
             else:
-                log.log_warn('Cannot find function! Addr: 0xx{:X}, Comment: "{}"'.format(addr, comm))
-	
+                log.log_warn('Cannot find function! Addr: 0x{:X}, Comment: "{}"'.format(addr, comm))
+
         self.bv.reanalyze()
 
 def spawn(bv):
