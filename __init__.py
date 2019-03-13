@@ -8,23 +8,28 @@ class LinearSweeper(BackgroundTaskThread):
         self.bv = bv
 
     def run(self):
-        r2p = r2pipe.open(self.bv.file.filename)
+        bin_filename = self.bv.file.original_filename
+
+        log.log_info("[r2] Starting analysis ({})".format(bin_filename))
+        r2p = r2pipe.open(bin_filename)
         r2p.cmd('aaa')
         r2functions = r2p.cmdj('aflj')
+        log.log_debug(str(r2functions))
         r2comments = r2p.cmdj('CCj')
         r2p.quit()
 
+        log.log_info("[r2] Updating functions")
         for r2function in r2functions:
             addr = r2function['offset']
-            bjfunc = self.bv.get_function(addr)
+            bjfunc = self.bv.get_function_at(addr)
 
             if bjfunc is None:
                 self.bv.add_function(addr, plat=self.bv.platform) # should do r2function['name'] as well
-                if self.bv.get_function(addr) is None:
+                if self.bv.get_function_at(addr) is None:
                     log.log_warn('Cannot create function! Addr: 0x{:X}'.format(addr))
                     continue
 
-            bjfunc = self.bv.get_function(addr)
+            bjfunc = self.bv.get_function_at(addr)
             if 'fcn.' not in r2function['name']:
                 log.log_info('Rename function "{}" -> "{}"'.format(
                     bjfunc.name,
@@ -35,6 +40,7 @@ class LinearSweeper(BackgroundTaskThread):
             
         self.bv.reanalyze()
         
+        log.log_info("[r2] Updating comments")
         # add helper comments
         for comment in r2comments:
             addr = comment['offset']
@@ -49,6 +55,7 @@ class LinearSweeper(BackgroundTaskThread):
                 log.log_warn('Cannot find function! Addr: 0x{:X}, Comment: "{}"'.format(addr, comm))
 
         self.bv.reanalyze()
+        log.log_info("[r2] Done")
 
 def spawn(bv):
     ls = LinearSweeper(bv)
