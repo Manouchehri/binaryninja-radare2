@@ -1,10 +1,10 @@
 # binaryninja-radare2
 
-This plugin allows Binary Ninja to take advantage of radare2's linear sweep (which Binja currently does not offer).
+This plugin allows Binary Ninja to take advantage of radare2's linear sweep,
+function name matching and transfering radare2 comments.
 
-Usually this will identify several functions that were missed by Binja.
 
-# Linux Installation
+## Linux Installation
 
 ```bash
 sudo pip install r2pipe
@@ -13,7 +13,7 @@ git clone https://github.com/Manouchehri/binaryninja-radare2 binaryninja_radare2
 echo "import binaryninja_radare2" >> ~/.binaryninja/plugins/wrapper.py
 ```
 
-# macOS Installation
+## macOS Installation
 
 Note: You probably need to run [binja-fixer](https://github.com/Manouchehri/binja-fixer) so that Binary Ninja will use the same Python library as r2pipe.
 
