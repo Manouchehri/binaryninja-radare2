@@ -24,13 +24,12 @@ class LinearSweeper(BackgroundTaskThread):
             # rename only if new name is not using r2 standard prefix
             # and detected function is not recognized by binja
             bjfunc = self.bv.get_function_at(addr)
-            if 'fcn.' not in r2function['name'] and 'sub_' not in bjfunc.name:
+            if 'fcn.' not in r2function['name'] and 'sub_' in bjfunc.name:
                 log.log_info('Rename function "{}" -> "{}"'.format(
                     bjfunc.name,
                     r2function['name']
                 ))
                 bjfunc.name = r2function['name']
-        self.bv.reanalyze()
 
     def update_comments(self, r2comments):
         # add radare commands
@@ -47,7 +46,6 @@ class LinearSweeper(BackgroundTaskThread):
             else:
                 log.log_warn('Cannot find function! Addr: 0x{:X}, Comment: "{}"'.format(addr, comm))
 
-        self.bv.reanalyze()
 
     def run(self):
         bin_filename = self.bv.file.original_filename
