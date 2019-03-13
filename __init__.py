@@ -7,7 +7,7 @@ class LinearSweeper(BackgroundTaskThread):
         BackgroundTaskThread.__init__(self, 'Linear sweeping...')
         self.bv = bv
 
-    def update_functions(r2functions):
+    def update_functions(self, r2functions):
         log.log_info("[r2] Updating functions")
         for r2function in r2functions:
             addr = r2function['offset']
@@ -32,7 +32,7 @@ class LinearSweeper(BackgroundTaskThread):
                 bjfunc.name = r2function['name']
         self.bv.reanalyze()
 
-    def update_comments(r2comments):
+    def update_comments(self, r2comments):
         # add radare commands
         log.log_info("[r2] Updating comments")
         for comment in r2comments:
